@@ -23,6 +23,10 @@ define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.0' );
  */
 function hello_elementor_child_scripts_styles() {
 
+    // Dynamically get version number of the parent stylesheet (lets browsers re-cache your stylesheet when you update the theme).
+    $theme   = wp_get_theme( 'hello-elementor-child-upro' );
+    $version = $theme->get( 'Version' );
+
 
     $js_directory = get_stylesheet_directory() . '/js';
     $css_directory = get_stylesheet_directory() . '/css';
@@ -33,7 +37,7 @@ function hello_elementor_child_scripts_styles() {
     if (is_dir($js_directory)) {
         foreach (glob($js_directory . '/*.js') as $file) {
             $file_name = basename($file);
-            wp_enqueue_script($file_name, $js_url . '/' . $file_name, array(), null, true);
+            wp_enqueue_script($file_name, $js_url . '/' . $file_name, array(), $version, true);
         }
     }
 
@@ -41,7 +45,7 @@ function hello_elementor_child_scripts_styles() {
     if (is_dir($css_directory)) {
         foreach (glob($css_directory . '/*.css') as $file) {
             $file_name = basename($file);
-            wp_enqueue_style($file_name, $css_url . '/' . $file_name);
+            wp_enqueue_style($file_name, $css_url . '/' . $file_name, '', $version);
         }
     }
 
